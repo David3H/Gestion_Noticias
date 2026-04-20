@@ -155,55 +155,57 @@ const AdminDashboard = () => {
 
         {/* Tabla de noticias */}
         <div className="bg-white shadow-sm ring-1 ring-gray-900/5 rounded-xl overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">{t('table_title')}</th>
-                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{t('table_date')}</th>
-                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{t('table_status')}</th>
-                <th className="relative py-3.5 pl-3 pr-4 sm:pr-6 text-right text-sm font-semibold text-gray-900">
-                  {t('table_actions')}
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {noticias.length === 0 ? (
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
                 <tr>
-                  <td colSpan="4" className="py-8 text-center text-sm text-gray-500">
-                    {t('news_available')}
-                  </td>
+                  <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">{t('table_title')}</th>
+                  <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{t('table_date')}</th>
+                  <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{t('table_status')}</th>
+                  <th className="relative py-3.5 pl-3 pr-4 sm:pr-6 text-right text-sm font-semibold text-gray-900">
+                    {t('table_actions')}
+                  </th>
                 </tr>
-              ) : (
-                noticiasPaginadas.map((noticia) => (
-                  <tr key={noticia.id} className="hover:bg-gray-50 transition">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                      {noticia[`titulo_${idiomaActual}`]}
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {formatearFecha(noticia.fecha_creacion)}
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm">
-                      <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset 
-                      ${noticia.estado === true
-                          ? 'bg-green-50 text-green-700 ring-green-600/20'
-                          : 'bg-yellow-50 text-yellow-800 ring-yellow-600/20'
-                        }`}>
-                        {noticia.estado === true ? `${t('published')}` : `${t('removed')}`}
-                      </span>
-                    </td>
-                    <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                      <Link to={`/admin/editar/${noticia.id}`} className="text-indigo-600 hover:text-indigo-900 mr-4">
-                        {t('edit')}
-                      </Link>
-                      <button onClick={() => prepararEliminacion(noticia.id)} className="text-red-600 hover:text-red-900">
-                        {t('delete')}
-                      </button>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {noticias.length === 0 ? (
+                  <tr>
+                    <td colSpan="4" className="py-8 text-center text-sm text-gray-500">
+                      {t('news_available')}
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  noticiasPaginadas.map((noticia) => (
+                    <tr key={noticia.id} className="hover:bg-gray-50 transition">
+                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                        {noticia[`titulo_${idiomaActual}`]}
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        {formatearFecha(noticia.fecha_creacion)}
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm">
+                        <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset 
+                        ${noticia.estado === true
+                            ? 'bg-green-50 text-green-700 ring-green-600/20'
+                            : 'bg-yellow-50 text-yellow-800 ring-yellow-600/20'
+                          }`}>
+                          {noticia.estado === true ? `${t('published')}` : `${t('removed')}`}
+                        </span>
+                      </td>
+                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                        <Link to={`/admin/editar/${noticia.id}`} className="text-indigo-600 hover:text-indigo-900 mr-4">
+                          {t('edit')}
+                        </Link>
+                        <button onClick={() => prepararEliminacion(noticia.id)} className="text-red-600 hover:text-red-900">
+                          {t('delete')}
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
           {noticias.length > 0 && (
             <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6 flex items-center justify-between">
               <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
@@ -215,8 +217,8 @@ const AdminDashboard = () => {
                       onClick={irPaginaAnterior}
                       disabled={paginaActual === 1}
                       className={`relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium ${paginaActual === 1
-                          ? 'text-gray-300 cursor-not-allowed'
-                          : 'text-gray-500 hover:bg-gray-50'
+                        ? 'text-gray-300 cursor-not-allowed'
+                        : 'text-gray-500 hover:bg-gray-50'
                         }`}
                     >
                       {t('before')}
@@ -231,8 +233,8 @@ const AdminDashboard = () => {
                       onClick={irPaginaSiguiente}
                       disabled={paginaActual === totalPaginas}
                       className={`relative inline-flex items-center px-4 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium ${paginaActual === totalPaginas
-                          ? 'text-gray-300 cursor-not-allowed'
-                          : 'text-gray-500 hover:bg-gray-50'
+                        ? 'text-gray-300 cursor-not-allowed'
+                        : 'text-gray-500 hover:bg-gray-50'
                         }`}
                     >
                       {t('after')}
