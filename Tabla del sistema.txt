@@ -1,0 +1,12 @@
+//Tabla del sistema
+CREATE TABLE posts (
+  id BIGSERIAL PRIMARY KEY,
+  slug TEXT UNIQUE NOT NULL,
+  titulo_es TEXT NOT NULL,
+  titulo_en TEXT NOT NULL,
+  contenido_es TEXT NOT NULL,
+  contenido_en TEXT NOT NULL,
+  imagen_url TEXT,
+  fecha_creacion TIMESTAMPTZ DEFAULT NOW(),
+  estado BOOL NOT NULL
+);
